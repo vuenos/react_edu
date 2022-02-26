@@ -1,7 +1,16 @@
 import React from 'react';
 import {Container, Navbar, Nav} from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 
 const Header = () => {
+
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        //back to page
+        navigate(-1);
+    };
+
     return (
         <header>
             <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -19,6 +28,8 @@ const Header = () => {
                             <Nav.Link href={"/orders"}>
                                 Orders
                             </Nav.Link>
+                            <Nav.Link href="/login">Login</Nav.Link>
+                            <Nav.Link href="/mypage">Mypage</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
