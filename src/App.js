@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import Layout from "./Layout";
-import {Home, Order, Orders, Products, Product, Users, User, Login, Mypage} from "./screens";
+import {Home, Order, Orders, Products, Product, Users, User, Login, Mypage, NotFound} from "./screens";
 
 const App = () => {
     return (
@@ -25,9 +25,7 @@ const App = () => {
                     <Route path="login" element={<Login />} />
                     <Route path="mypage" element={<Mypage />} />
 
-                    <Route path="*" element={
-                        <div style={{ padding: "1rem" }}>There's nothing here!</div>
-                    } />
+                    <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
         </div>
