@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import {Button, Container, Form, FormLabel} from "react-bootstrap";
+import {Button, Form, FormLabel} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import { FormContainer } from "../components"
 
 const Login = () => {
 
@@ -39,7 +40,7 @@ const Login = () => {
     }
 
     return (
-        <Container>
+        <FormContainer>
             <h1>Sign in</h1>
             <Form onSubmit={loginHandler}>
                 <Form.Group controlId={"email"}>
@@ -65,7 +66,7 @@ const Login = () => {
 
                 <Button type="submit" variant="primary">Sign in</Button>
             </Form>
-        </Container>
+        </FormContainer>
     );
 };
 

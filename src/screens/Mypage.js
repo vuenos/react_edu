@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
+import {FormContainer} from "../components"
 
 const Mypage = () => {
 
@@ -33,11 +34,11 @@ const Mypage = () => {
 
 
     return (
-        <div>
+        <FormContainer>
             <h1>Mypage</h1>
             <p>{profile.name}</p>
             <h1>{profile.email}</h1>
-        </div>
+        </FormContainer>
     );
 };
 
