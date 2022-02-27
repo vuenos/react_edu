@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Link } from "react-router-dom"
+import { FormContainer } from "../components"
 
 const Users = () => {
 
@@ -22,7 +23,7 @@ const Users = () => {
 
 
     return (
-        <div>
+        <FormContainer>
             <h1>Users</h1>
             <ul>
                 {users.map((user) => (
@@ -31,7 +32,7 @@ const Users = () => {
                     </li>
                 ))}
             </ul>
-        </div>
+        </FormContainer>
     );
 };
 
