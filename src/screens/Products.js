@@ -35,7 +35,7 @@ const Products = () => {
                         <thead>
                         <tr>
                             <th>No</th>
-                            <th>ID</th>
+                            <th>Photo</th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>CountInstock</th>
@@ -47,7 +47,7 @@ const Products = () => {
                             <LinkContainer to={`${product._id}`}>
                                 <tr>
                                     <td>{index + 1}</td>
-                                    <td>{product._id}</td>
+                                    <td><img src={product.image} alt="" style={{ width: 80 }} /></td>
                                     <td>{product.name}</td>
                                     <td>${product.price}</td>
                                     <td>{product.countInStock} EA</td>

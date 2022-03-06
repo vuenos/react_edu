@@ -1,6 +1,6 @@
 import React from 'react';
-import {Container, Navbar, Nav} from "react-bootstrap";
-import { useNavigate, Link } from "react-router-dom";
+import {Container, Navbar, Nav, Button} from "react-bootstrap";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 
 const Header = () => {
 
@@ -11,25 +11,28 @@ const Header = () => {
         navigate(-1);
     };
 
+    const activeStyle = ({isActive}) => "nav-link" + (isActive ? " activated" : "");
+
     return (
         <header>
             <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
                 <Container>
+                    <Button onClick={goBack}>Back</Button>
                     <Navbar.Brand href={"/"}>My shop</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className={"ml-auto"}>
-                            <Nav.Link href={"/users"}>
+                            <NavLink to={"/users"} className={activeStyle}>
                                 Users
-                            </Nav.Link>
-                            <Nav.Link href={"/products"}>
+                            </NavLink>
+                            <NavLink to={"/products"} className={activeStyle}>
                                 Products
-                            </Nav.Link>
-                            <Nav.Link href={"/orders"}>
+                            </NavLink>
+                            <NavLink to={"/orders"} className={activeStyle}>
                                 Orders
-                            </Nav.Link>
-                            <Nav.Link href="/login">Login</Nav.Link>
-                            <Nav.Link href="/mypage">Mypage</Nav.Link>
+                            </NavLink>
+                            <NavLink to="/login" className={activeStyle}>Login</NavLink>
+                            <NavLink to="/mypage" className={activeStyle}>Mypage</NavLink>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
