@@ -11,10 +11,8 @@ const App = () => {
                     <Route index element={<Home />} />
                     <Route path="users" element={<Users />} />
                     <Route path="users/:userId" element={<User />} />
-                    <Route path="products" element={<Products />}>
-                        <Route index element={<div>Select an orders</div>} />
-                        <Route path=":goodsNo" element={<Product />} />
-                    </Route>
+                    <Route path="products" element={<Products />} />
+                    <Route path="products/:productId" element={<Product />} />
                     <Route path="orders" element={<Orders />}>
                         <Route index element={
                             <div style={{ padding: "1rem" }}>Select an invoices</div>

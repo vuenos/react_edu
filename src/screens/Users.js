@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { Link } from "react-router-dom"
-import { FormContainer } from "../components"
 import {Container, Table, Row, Col} from "react-bootstrap";
+import {LinkContainer} from "react-router-bootstrap"
 
 const Users = () => {
 
     const [users, setUsers] = useState([]);
 
     const getUsers = async () => {
+        //localstorage에 token 담기
         const token = localStorage.getItem("token")
 
+        //API Networking을 위해 access token을 API서버에 제출해서 인증.
         const config = {
             headers: {
                 Authorization: "Bearer " + token
@@ -36,8 +37,9 @@ const Users = () => {
         <Container>
             <h1>Users</h1>
             <Row>
-                <Table striped bordered hover>
-                    <thead>
+                <Col>
+                    <Table striped bordered hover>
+                        <thead>
                         <tr>
                             <th>ID</th>
                             <th>name</th>
@@ -45,19 +47,23 @@ const Users = () => {
                             <th>join date</th>
                             <th>isAdmin</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                    {users.map((user) => (
-                        <tr>
-                            <td>{user._id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.createdAt.slice(0, 10)}</td>
-                            <td>{user.isAdmin === true ? "admin" : "user"}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                        {users.map((user) => (
+
+                            <LinkContainer to={`${user._id}`}>
+                                <tr>
+                                    <td>{user._id}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.createdAt.slice(0, 10)}</td>
+                                    <td>{user.isAdmin === true ? "admin" : "user"}</td>
+                                </tr>
+                            </LinkContainer>
+                        ))}
+                        </tbody>
+                    </Table>
+                </Col>
 
             </Row>
         </Container>

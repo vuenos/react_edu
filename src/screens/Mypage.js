@@ -21,8 +21,6 @@ const Mypage = () => {
     const modifyHandler = async (e) => {
         e.preventDefault();
 
-
-
         const userInput = { name, email, password }
 
         try {
@@ -45,10 +43,6 @@ const Mypage = () => {
 
 
     const getProfile = async () => {
-
-
-
-
 
           try {
               const { data } = await axios.get("http://localhost:5000/api/users/profile", config)

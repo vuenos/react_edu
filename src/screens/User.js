@@ -1,16 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import {Container, Row, Col} from "react-bootstrap";
+
 
 const User = () => {
-    let params = useParams();
+    let params = useParams();//App.js Router에서 정의됨
 
-    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState({});
 
     const getUsers = async () => {
+
+        const token = localStorage.getItem('token')
+
+        const config = {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        }
+
         try {
-            const { data } = await axios.get(`https://jsonplaceholder.typicode.com/users/${params.userId}`);
-            setUsers(data);
+            const { data } = await axios.get(`http://localhost:5000/api/users/${params.userId}`, config);
+            setUser(data);
         } catch (error) {
             //
             console.log(error);
@@ -22,9 +33,14 @@ const User = () => {
     }, []);
 
     return (
-        <div>
-            <h2>{params.userId}, {users.name}</h2>
-        </div>
+        <Container>
+            <Row>
+                <Col>
+                    <h2>{user.email}</h2>
+                    <p>{user.name}</p>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
