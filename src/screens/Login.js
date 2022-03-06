@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Button, Form, FormLabel} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import { FormContainer } from "../components"
+import { FormContainer, Loader, Message } from "../components"
 
 const Login = () => {
 
@@ -10,6 +10,8 @@ const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("");
 
 
     const loginHandler = async (e) => {
@@ -21,27 +23,49 @@ const Login = () => {
             password: password
         }
 
+        if (email === "" && password === "") {
+            setError("Please Check email, password")
+            return
+        }
+
         // 네트워킹
         try {
-            const { data, status } = await axios.post("http://localhost:5000/api/users/login", userInput)
 
-            // data token 로컬스토리지(브라우자) 저장
+            setLoading(true);
+            const {data, status} = await axios.post("http://localhost:5000/api/users/login", userInput)
+            //data token 로컬스토리지(브라우자) 저장
+            console.log(status);
             if (status === 200) {
                 localStorage.setItem("token", data.token)
-                navigate("/mypage")
+
+                setTimeout(() => {
+                    setLoading(false)
+                    navigate("/mypage")
+                }, 1500)
             }
 
-
         } catch (error) {
-            console.log(error.message)
+            console.log(error.response.data.message)
+            setError(error.response.data.message)
+            setLoading(false)
         }
 
 
     }
 
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/mypage")
+        }
+    }, []);
+
+
     return (
         <FormContainer>
             <h1>Sign in</h1>
+            {error && <Message variant="danger">{error}</Message>}
+            {loading && <Loader />}
+
             <Form onSubmit={loginHandler}>
                 <Form.Group controlId={"email"}>
                     <FormLabel>Email address</FormLabel>

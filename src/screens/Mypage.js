@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
-import {FormContainer} from "../components"
+import {FormContainer, Loader} from "../components"
 import { Form, FormLabel, Button } from "react-bootstrap"
 
 const Mypage = () => {
 
+    const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -25,14 +26,20 @@ const Mypage = () => {
         const userInput = { name, email, password }
 
         try {
+            setLoading(true)
             const { data, status } = await axios.put("http://localhost:5000/api/users/profile", userInput, config)
             if (status === 200) {
-                alert("Updated")
+
+                setTimeout(() => {
+                    setLoading(false)
+                    alert("Updated");
+                }, 1500)
 
             }
 
         } catch (error) {
             console.log(error.message)
+            setLoading(false)
         }
     }
 
@@ -64,6 +71,7 @@ const Mypage = () => {
     return (
         <FormContainer>
             <h1>Mypage</h1>
+            {loading && <Loader />}
             <div>
                 <Form onSubmit={modifyHandler}>
                     <Form.Group controlId={"name"}>
@@ -97,6 +105,9 @@ const Mypage = () => {
                         />
                     </Form.Group>
                     <br />
+                    <Form.Group controlId={"isAdmin"}>
+
+                    </Form.Group>
                     <Button type="submit" variant="primary">Modify</Button>
                 </Form>
             </div>
