@@ -23,12 +23,13 @@ const Login = () => {
             password: password
         }
 
+        // 사용자입력값이 비어있으면 에러메시지
         if (email === "" && password === "") {
             setError("Please Check email, password")
             return
         }
 
-        // 네트워킹
+        // API 네트워킹
         try {
 
             setLoading(true);
@@ -36,20 +37,19 @@ const Login = () => {
             //data token 로컬스토리지(브라우자) 저장
             console.log(status);
             if (status === 200) {
-                localStorage.setItem("token", data.token)
+                localStorage.setItem("token", data.token);
 
                 setTimeout(() => {
-                    setLoading(false)
-                    navigate("/mypage")
-                }, 1500)
+                    setLoading(false);
+                    navigate("/mypage");
+                }, 1500);
             }
 
         } catch (error) {
-            console.log(error.response.data.message)
-            setError(error.response.data.message)
-            setLoading(false)
+            console.log(error.response.data.message);
+            setError(error.response.data.message);
+            setLoading(false);
         }
-
 
     }
 

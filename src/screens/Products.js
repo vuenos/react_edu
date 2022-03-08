@@ -1,36 +1,52 @@
 import React, {useState, useEffect} from 'react';
 import { Outlet, Link } from "react-router-dom"
-import {Table, Container, Row, Col} from "react-bootstrap";
+import {Table, Container, Row, Col, Button} from "react-bootstrap";
 import axios from "axios";
-import {LinkContainer} from "react-router-bootstrap"
-import product from "./Product";
+import {LinkContainer} from "react-router-bootstrap";
+import { Loader, Pagination } from "../components";
 
 const Products = () => {
 
     const [products, setProducts] = useState([]);
 
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postPerPage, setPostPerPage] = useState(5);
+
     const getProducts = async () => {
 
         try {
+            setLoading(true);
             const { data } = await axios.get("http://localhost:5000/api/products")
-            console.log("++++++++++++++++++", data);
-            setProducts(data.products);
+
+            setTimeout(() => {
+                setLoading(false);
+                console.log("++++++++++++++++++", data);
+                setProducts(data.products);
+                console.log(data.page.length());
+              }, 0)
         } catch (error) {
             console.log(error.response.data.message)
         }
-
     }
 
     useEffect(() => {
         getProducts();
     }, []);
 
+    //Get current posts
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+    const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
     return (
         <Container>
             <h1>Products</h1>
             <Row>
                 <Col>
+                    {loading && <Loader />}
                     <Table striped bordered hover>
                         <thead>
                         <tr>
@@ -54,11 +70,25 @@ const Products = () => {
                                     <td>{product.brand}</td>
                                 </tr>
                             </LinkContainer>
-                        ))}
+                        )).slice(indexOfFirstPost, indexOfLastPost)}
                         </tbody>
                     </Table>
                 </Col>
 
+            </Row>
+
+            <Row>
+                <Pagination
+                  postPerPage={postPerPage}
+                  totalPosts={products.length}
+                  paginate={paginate}
+                />
+            </Row>
+
+            <Row className="d-flex justify-content-end mt-4">
+                <Link to="addProduct">
+                    <Button variant="success">Add Product</Button>
+                </Link>
             </Row>
 
         {/*<Container>*/}
