@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import {Container, Row, Col, Button} from "react-bootstrap";
 
@@ -38,10 +38,9 @@ const Product = () => {
                     <p>{product.description}</p>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <Button onClick={goBack}>List</Button>
-                </Col>
+            <Row className="justify-content-between">
+                <Button onClick={goBack}>List</Button>
+                <Link to={`modify`} className="btn btn-warning">Modify</Link>
             </Row>
         </Container>
     );

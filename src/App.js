@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import Layout from "./Layout";
-import {Home, Order, Orders, Products, Product, AddProduct, Users, User, Login, Mypage, NotFound} from "./screens";
+import {Home, Order, Orders, Products, Product, AddProduct, ModifyProduct, Users, User, Login, Mypage, NotFound} from "./screens";
 
 const App = () => {
     return (
@@ -13,6 +13,7 @@ const App = () => {
                     <Route path="users/:userId" element={<User />} />
                     <Route path="products" element={<Products />} />
                     <Route path="products/:productId" element={<Product />} />
+                    <Route path="products/:productId/modify" element={<ModifyProduct />} />
                     <Route path="products/addProduct" element={<AddProduct />} />
                     <Route path="orders" element={<Orders />}>
                         <Route index element={
