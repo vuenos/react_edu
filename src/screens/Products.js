@@ -11,7 +11,7 @@ const Products = () => {
 
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(5);
+  const [postPerPage, setPostPerPage] = useState(10);
 
   const getProducts = async () => {
 
@@ -37,7 +37,7 @@ const Products = () => {
   //Get current posts
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
+  //const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
