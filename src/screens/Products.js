@@ -1,17 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import { Outlet, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import {Table, Container, Row, Col, Button} from "react-bootstrap";
 import axios from "axios";
 import {LinkContainer} from "react-router-bootstrap";
-import { Loader, Pagination } from "../components";
+import { Loader } from "../components";
+import ReactPaginate from "react-paginate";
 
 const Products = () => {
 
   const [products, setProducts] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(10);
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const producstPerPage = 5;
+  const pageVisited = pageNumber * producstPerPage;
 
   const getProducts = async () => {
 
@@ -34,12 +37,10 @@ const Products = () => {
     getProducts();
   }, []);
 
-  //Get current posts
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  //const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+  const pageCount = Math.ceil(products.length / producstPerPage);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  }
 
   return (
     <Container>
@@ -59,7 +60,9 @@ const Products = () => {
             </tr>
             </thead>
             <tbody>
-            {products && products.map((product, index) => (
+            {products && products
+              .slice(pageVisited, pageVisited + producstPerPage)
+              .map((product, index) => (
               <LinkContainer to={`${product._id}`}>
                 <tr>
                   <td>{index + 1}</td>
@@ -70,7 +73,7 @@ const Products = () => {
                   <td>{product.brand}</td>
                 </tr>
               </LinkContainer>
-            )).slice(indexOfFirstPost, indexOfLastPost)}
+            ))}
             </tbody>
           </Table>
         </Col>
@@ -78,10 +81,16 @@ const Products = () => {
       </Row>
 
       <Row>
-        <Pagination
-          postPerPage={postPerPage}
-          totalPosts={products.length}
-          paginate={paginate}
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName={"paginationBttns"}
+          previousLinkClassName={"previousBttn"}
+          nextLinkClassName={"nextBttn"}
+          disabledClassName={"paginationDisabled"}
+          activeClassName={"paginationActive"}
         />
       </Row>
 
