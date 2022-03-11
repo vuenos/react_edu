@@ -31,7 +31,10 @@ const Header = () => {
                             <NavLink to={"/orders"} className={activeStyle}>
                                 Orders
                             </NavLink>
-                            <NavLink to="/login" className={activeStyle}>Login</NavLink>
+                            {(localStorage.getItem('token'))
+                              ? <NavLink to="/login" className={activeStyle}>Login</NavLink>
+                              : <Button>Logout</Button>
+                            }
                             <NavLink to="/mypage" className={activeStyle}>Mypage</NavLink>
                         </Nav>
                     </Navbar.Collapse>

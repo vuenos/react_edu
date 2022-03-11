@@ -51,7 +51,6 @@ const Products = () => {
           <Table striped bordered hover>
             <thead>
             <tr>
-              <th>No</th>
               <th>Photo</th>
               <th>Name</th>
               <th>Price</th>
@@ -65,7 +64,6 @@ const Products = () => {
               .map((product, index) => (
               <LinkContainer to={`${product._id}`}>
                 <tr>
-                  <td>{index + 1}</td>
                   <td><img src={product.image} alt="" style={{ width: 80 }} /></td>
                   <td>{product.name}</td>
                   <td>${product.price}</td>
