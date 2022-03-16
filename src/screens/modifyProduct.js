@@ -50,7 +50,7 @@ const AddProduct = () => {
     }
 
     // 빈 입력값 처리
-    if (name === "" && price === "" && image === "") {
+    if (name === "" && price === "") {
       setError("Please check input");
       return
     }
