@@ -3,10 +3,13 @@ import axios from "axios";
 import {FormContainer, Loader} from "../components"
 import { Form, FormLabel, Button } from "react-bootstrap"
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {logout} from "../actions/userActions";
 
 const Mypage = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
@@ -22,9 +25,13 @@ const Mypage = () => {
   }
 
   //token 삭제하고 로그아웃
-  const deleteToken = () => {
-    localStorage.removeItem('userInfo');
-    navigate('/');
+  // const deleteToken = () => {
+  //   localStorage.removeItem('userInfo');
+  //   navigate('/');
+  // }
+
+  const logoutHandler = () => {
+    dispatch(logout())
   }
 
   const modifyHandler = async (e) => {
@@ -62,7 +69,7 @@ const Mypage = () => {
       setPassword(data.password)
     } catch (error) {
       //
-      console.log(error.message)
+      //console.log(error.message)
     }
   }
 
@@ -112,7 +119,7 @@ const Mypage = () => {
 
           </Form.Group>
           <Form.Group className="d-flex justify-content-between">
-            <Button onClick={deleteToken} variant="outline-danger">Log out</Button>
+            <Button onClick={logoutHandler} variant="outline-danger">Log out</Button>
             <Button type="submit" variant="primary">Modify</Button>
           </Form.Group>
         </Form>
