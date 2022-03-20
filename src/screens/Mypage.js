@@ -23,7 +23,7 @@ const Mypage = () => {
 
   //token 삭제하고 로그아웃
   const deleteToken = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
     navigate('/');
   }
 
