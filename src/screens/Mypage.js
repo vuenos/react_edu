@@ -21,6 +21,7 @@ const Mypage = () => {
     }
   }
 
+  //token 삭제하고 로그아웃
   const deleteToken = () => {
     localStorage.removeItem('token');
     navigate('/');
@@ -68,8 +69,6 @@ const Mypage = () => {
   useEffect(() => {
     getProfile();
   }, []);
-
-
 
 
   return (

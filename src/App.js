@@ -2,10 +2,12 @@ import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import Layout from "./Layout";
 import {Home, Order, Orders, Products, Product, AddProduct, ModifyProduct, Users, User, Login, Mypage, NotFound} from "./screens";
+import { Provider } from 'react-redux';
+import store from './store'
 
 const App = () => {
   return (
-    <div>
+    <Provider store={store}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -23,7 +25,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-    </div>
+    </Provider>
   );
 };
 
