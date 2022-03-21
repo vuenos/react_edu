@@ -1,34 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import axios from "axios";
+//import axios from "axios";
 import {FormContainer, Loader} from "../components"
 import { Form, FormLabel, Button } from "react-bootstrap"
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../actions/userActions";
+import { getProfile } from "../actions/userActions";
 
 const Mypage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const token = localStorage.getItem('token');
+  const userProfile = useSelector((state) => state.userProfile)
+  const { loading, user, error } = userProfile;
+  console.log(user)
 
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
-
-  //token 삭제하고 로그아웃
-  // const deleteToken = () => {
-  //   localStorage.removeItem('userInfo');
-  //   navigate('/');
-  // }
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const logoutHandler = () => {
     dispatch(logout())
@@ -37,45 +30,25 @@ const Mypage = () => {
   const modifyHandler = async (e) => {
     e.preventDefault();
 
-    const userInput = { name, email, password }
-
-    try {
-      setLoading(true)
-      const { data, status } = await axios.put("http://localhost:5000/api/users/profile", userInput, config)
-      if (status === 200) {
-
-        setTimeout(() => {
-          setLoading(false)
-          alert("Updated");
-        }, 1500)
-
-      }
-
-    } catch (error) {
-      console.log(error.message)
-      setLoading(false)
-    }
   }
 
 
-  const getProfile = async () => {
 
-    try {
-      const { data } = await axios.get("http://localhost:5000/api/users/profile", config)
-
-      console.log(data)
-      setName(data.name)
-      setEmail(data.email)
-      setPassword(data.password)
-    } catch (error) {
-      //
-      //console.log(error.message)
-    }
-  }
 
   useEffect(() => {
-    getProfile();
-  }, []);
+
+    if (!userInfo) {
+      navigate('/login')
+    } else {
+      if (!user || !user.name || !user.email) {
+        dispatch(getProfile())
+      } else {
+        setName(user.name)
+        setEmail(user.email)
+        setPassword(user.password)
+      }
+    }
+  }, [dispatch, userInfo, user]);
 
 
   return (

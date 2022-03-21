@@ -1,41 +1,29 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from "react-router-dom"
 import {Table, Container, Row, Col, Button} from "react-bootstrap";
-import axios from "axios";
 import {LinkContainer} from "react-router-bootstrap";
 import { Loader } from "../components";
 import ReactPaginate from "react-paginate";
+import {useSelector, useDispatch} from "react-redux";
+import {listProducts} from "../actions/productsActions";
 
 const Products = () => {
+  const dispatch = useDispatch();
 
-  const [products, setProducts] = useState([]);
-
-  const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
 
   const producstPerPage = 5;
   const pageVisited = pageNumber * producstPerPage;
+  const productList = useSelector((state) => state.productList)
+  const { loading, products, error } = productList;
 
-  const getProducts = async () => {
+  console.log("+++++++++++++++", products)
 
-    try {
-      setLoading(true);
-      const { data } = await axios.get("http://localhost:5000/api/products")
-
-      setTimeout(() => {
-        setLoading(false);
-        console.log("++++++++++++++++++", data);
-        setProducts(data.products);
-        console.log(data.page.length());
-      }, 0)
-    } catch (error) {
-      console.log(error.response.data.message)
-    }
-  }
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    //getProducts();
+    dispatch(listProducts())
+  }, [dispatch, products]);
 
   const pageCount = Math.ceil(products.length / producstPerPage);
   const changePage = ({ selected }) => {
@@ -60,9 +48,8 @@ const Products = () => {
             </thead>
             <tbody>
             {products && products
-              .slice(pageVisited, pageVisited + producstPerPage)
               .map((product, index) => (
-              <LinkContainer to={`${product._id}`}>
+              <LinkContainer to={`${product._id}`} key={product._id}>
                 <tr>
                   <td><img src={product.image} alt="" style={{ width: 80 }} /></td>
                   <td>{product.name}</td>
