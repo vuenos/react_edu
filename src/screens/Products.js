@@ -3,17 +3,12 @@ import { Link } from "react-router-dom"
 import {Table, Container, Row, Col, Button} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import { Loader } from "../components";
-import ReactPaginate from "react-paginate";
 import {useSelector, useDispatch} from "react-redux";
 import {listProducts} from "../actions/productsActions";
 
 const Products = () => {
   const dispatch = useDispatch();
 
-  const [pageNumber, setPageNumber] = useState(0);
-
-  const producstPerPage = 5;
-  const pageVisited = pageNumber * producstPerPage;
   const productList = useSelector((state) => state.productList)
   const { loading, products, error } = productList;
 
@@ -21,14 +16,10 @@ const Products = () => {
 
 
   useEffect(() => {
-    //getProducts();
+    //
     dispatch(listProducts())
-  }, [dispatch, products]);
+  }, [dispatch]);
 
-  const pageCount = Math.ceil(products.length / producstPerPage);
-  const changePage = ({ selected }) => {
-    setPageNumber(selected);
-  }
 
   return (
     <Container>
@@ -48,7 +39,7 @@ const Products = () => {
             </thead>
             <tbody>
             {products && products
-              .map((product, index) => (
+              .map((product) => (
               <LinkContainer to={`${product._id}`} key={product._id}>
                 <tr>
                   <td><img src={product.image} alt="" style={{ width: 80 }} /></td>
@@ -63,20 +54,6 @@ const Products = () => {
           </Table>
         </Col>
 
-      </Row>
-
-      <Row>
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          pageCount={pageCount}
-          onPageChange={changePage}
-          containerClassName={"paginationBttns"}
-          previousLinkClassName={"previousBttn"}
-          nextLinkClassName={"nextBttn"}
-          disabledClassName={"paginationDisabled"}
-          activeClassName={"paginationActive"}
-        />
       </Row>
 
       <Row className="d-flex justify-content-end mt-4">

@@ -51,7 +51,7 @@ const Users = () => {
             <tbody>
             {users.map((user) => (
 
-              <LinkContainer to={`${user._id}`}>
+              <LinkContainer to={`${user._id}`} key={user._id}>
                 <tr>
                   <td>{user._id}</td>
                   <td>{user.name}</td>

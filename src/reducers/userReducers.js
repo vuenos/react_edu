@@ -6,7 +6,11 @@ import {
 
   GET_PROFILE_SUCCESS,
   GET_PROFILE_REQUEST,
-  GET_PROFILE_FAIL
+  GET_PROFILE_FAIL,
+
+  MOD_PROFILE_REQUEST,
+  MOD_PROFILE_SUCCESS,
+  MOD_PROFILE_FAIL
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -32,6 +36,20 @@ export const userProfileReducer = (state = {user: {}}, action) => {
     case GET_PROFILE_SUCCESS:
       return { loading: false, user: action.payload }
     case GET_PROFILE_FAIL:
+      return { loading: true, error: action.payload }
+    default:
+      return state
+  }
+}
+
+//Profile modify
+export const userModProfileReducer = (state = {user: {}}, action) => {
+  switch (action.type) {
+    case MOD_PROFILE_REQUEST:
+      return { ...state, loading: true }
+    case MOD_PROFILE_SUCCESS:
+      return { loading: false, user: action.payload }
+    case MOD_PROFILE_FAIL:
       return { loading: true, error: action.payload }
     default:
       return state

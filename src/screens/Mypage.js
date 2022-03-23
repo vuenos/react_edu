@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../actions/userActions";
 import { getProfile } from "../actions/userActions";
+import { modifyProfile } from "../actions/userActions";
 
 const Mypage = () => {
 
@@ -29,11 +30,8 @@ const Mypage = () => {
 
   const modifyHandler = async (e) => {
     e.preventDefault();
-
+    dispatch(modifyProfile(name, email, password))
   }
-
-
-
 
   useEffect(() => {
 
@@ -49,7 +47,6 @@ const Mypage = () => {
       }
     }
   }, [dispatch, userInfo, user]);
-
 
   return (
     <FormContainer>
