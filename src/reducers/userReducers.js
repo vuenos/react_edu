@@ -43,12 +43,12 @@ export const userProfileReducer = (state = {user: {}}, action) => {
 }
 
 //Profile modify
-export const userModProfileReducer = (state = {user: {}}, action) => {
+export const userModProfileReducer = (state = {userInfo: {}}, action) => {
   switch (action.type) {
     case MOD_PROFILE_REQUEST:
       return { ...state, loading: true }
     case MOD_PROFILE_SUCCESS:
-      return { loading: false, user: action.payload }
+      return { loading: false, userInfo: action.payload }
     case MOD_PROFILE_FAIL:
       return { loading: true, error: action.payload }
     default:

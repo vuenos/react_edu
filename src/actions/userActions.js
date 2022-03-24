@@ -72,10 +72,12 @@ export const getProfile = () => async (dispatch, getState) => {
     }
 
     const { data, status } = await axios.get("http://localhost:5000/api/users/profile", config)
-    dispatch({
-      type: GET_PROFILE_SUCCESS,
-      payload: data
-    })
+    if (status === 200) {
+      dispatch({
+        type: GET_PROFILE_SUCCESS,
+        payload: data
+      })
+    }
 
   } catch (err) {
     dispatch({
@@ -95,7 +97,7 @@ export const modifyProfile = (name, email, password) => async (dispatch, getStat
     })
 
     const {
-      userLogin: {userInfo}
+      userModProfile: {userInfo}
     } = getState();
 
     const config = {
@@ -107,12 +109,13 @@ export const modifyProfile = (name, email, password) => async (dispatch, getStat
     const userInput = { name, email, password }
 
     const { data, status } = await axios.put("http://localhost:5000/api/users/profile", userInput, config);
-    dispatch ({
-      type: MOD_PROFILE_SUCCESS,
-      payload: data
-    })
-
-    localStorage.getItem(userInfo.token)
+    if (status === 200) {
+      dispatch ({
+        type: MOD_PROFILE_SUCCESS,
+        payload: data
+      })
+    }
+    console.log("#############" + data);
 
   } catch (err) {
     dispatch({

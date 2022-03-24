@@ -30,7 +30,7 @@ const Mypage = () => {
 
   const modifyHandler = async (e) => {
     e.preventDefault();
-    dispatch(modifyProfile(name, email, password))
+    dispatch(modifyProfile(name, email, password));
   }
 
   useEffect(() => {
