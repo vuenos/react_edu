@@ -22,17 +22,17 @@ const initialState = {
   userModProfile: { userInfo: userInfoFromStorage }
 };//프로젝트 실행시 default로 얻을수 있는 state
 
-const middelware = [thunk];
+const middleware = [thunk];
 
 if(env === 'development') {
   const { logger } = require('redux-logger');
-  middelware.push(logger)
+  middleware.push(logger)
 }//env 변수를 통해 Backend의 어플리케이션 상태가 development 일때 redux-logger를 호출하고 어플리케이션의 middleware에 적용한다.
 
 const store = createStore(
     reducer,
     initialState,
-    composeWithDevTools(applyMiddleware(...middelware))
+    composeWithDevTools(applyMiddleware(...middleware))
 )
 
 export default store;

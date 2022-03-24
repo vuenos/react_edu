@@ -43,7 +43,7 @@ export const userProfileReducer = (state = {user: {}}, action) => {
 }
 
 //Profile modify
-export const userModProfileReducer = (state = {userInfo: {}}, action) => {
+export const userModProfileReducer = (state = {}, action) => {
   switch (action.type) {
     case MOD_PROFILE_REQUEST:
       return { ...state, loading: true }
