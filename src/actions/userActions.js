@@ -94,17 +94,15 @@ export const modifyProfile = (name, email, password) => async (dispatch, getStat
   try {
     dispatch({
       type: MOD_PROFILE_REQUEST
-    })
+    });
 
-    const {
-      userModProfile: {userInfo}
-    } = getState();
+    const { userInfo } = getState().userModProfile;
 
     const config = {
       header: {
         Authorization: `Bearer ${userInfo.token}`
-      }
-    }
+      },
+    };
 
     const userInput = { name, email, password }
 

@@ -50,7 +50,7 @@ export const userModProfileReducer = (state = {}, action) => {
     case MOD_PROFILE_SUCCESS:
       return { loading: false, userInfo: action.payload }
     case MOD_PROFILE_FAIL:
-      return { loading: true, error: action.payload }
+      return { loading: false, error: action.payload }
     default:
       return state
   }

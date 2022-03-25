@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 //import axios from "axios";
-import {FormContainer, Loader} from "../components"
+import {FormContainer, Loader, Message} from "../components"
 import { Form, FormLabel, Button } from "react-bootstrap"
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -51,6 +51,7 @@ const Mypage = () => {
   return (
     <FormContainer>
       <h1>Mypage</h1>
+      {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
       <div>
         <Form onSubmit={modifyHandler}>
