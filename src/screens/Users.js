@@ -1,36 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
-import {Container, Table, Row, Col} from "react-bootstrap";
-import {LinkContainer} from "react-router-bootstrap"
+import React, { useEffect } from 'react';
+import { Container, Table, Row, Col } from "react-bootstrap";
+import {Loader, Message} from "../components"
+import { LinkContainer } from "react-router-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsersList } from "../actions/userActions"
 
 const Users = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [users, setUsers] = useState([]);
+  const userList = useSelector((state) => state.userList);
+  const { loading, users, error } = userList;
 
-  const getUsers = async () => {
-    //localstorage에 token 담기
-    const token = localStorage.getItem("token")
-
-    //API Networking을 위해 access token을 API서버에 제출해서 인증.
-    const config = {
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    }
-
-    try {
-      const { data } = await axios.get("http://localhost:5000/api/users", config);
-      console.log("---------" + data);
-      setUsers(data);
-    } catch (error) {
-      //
-      console.log(error);
-    }
-  }
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (!userInfo) {
+      navigate('/login');
+    } else {
+      dispatch(getUsersList());
+    }
+  }, [dispatch, navigate, userInfo]);
 
 
   return (
@@ -38,6 +30,7 @@ const Users = () => {
       <h1>Users</h1>
       <Row>
         <Col>
+          {error && <Message variant="danger">{error}</Message>}
           <Table striped bordered hover>
             <thead>
             <tr>
@@ -49,7 +42,8 @@ const Users = () => {
             </tr>
             </thead>
             <tbody>
-            {users.map((user) => (
+            {loading && <Loader />}
+            {users && users.map((user) => (
 
               <LinkContainer to={`${user._id}`} key={user._id}>
                 <tr>
@@ -57,7 +51,7 @@ const Users = () => {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.createdAt.slice(0, 10)}</td>
-                  <td>{user.isAdmin === true ? "admin" : "user"}</td>
+                  <td>{user.isAdmin === "true" ? "admin" : "user"}</td>
                 </tr>
               </LinkContainer>
             ))}

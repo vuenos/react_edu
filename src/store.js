@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux"
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { userLoginReducer, userProfileReducer, userModProfileReducer } from "./reducers/userReducers";
+import { userLoginReducer, userProfileReducer, userModProfileReducer, getUserListReducer } from "./reducers/userReducers";
 import { productsListReducer } from "./reducers/productsReducer";
 
 const env = process.env.NODE_ENV;//Backend env 설정의 NODE_ENV 상태(어플리케이션 상태)
@@ -9,8 +9,8 @@ const env = process.env.NODE_ENV;//Backend env 설정의 NODE_ENV 상태(어플�
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userProfile: userProfileReducer,
-  userModProfile: userModProfileReducer,
-  productList: productsListReducer
+  productList: productsListReducer,
+  userList: getUserListReducer
 });//어플리케이션의 모든 reducer를 combine해준다.
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -18,8 +18,7 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   : null; //
 
 const initialState = {
-  userLogin: { userInfo: userInfoFromStorage },
-  userModProfile: { userInfo: userInfoFromStorage }
+  userLogin: { userInfo: userInfoFromStorage }
 };//프로젝트 실행시 default로 얻을수 있는 state
 
 const middleware = [thunk];

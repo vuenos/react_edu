@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 //import axios from "axios";
-import {FormContainer, Loader, Message} from "../components"
+import { FormContainer, Loader, Message } from "../components"
 import { Form, FormLabel, Button } from "react-bootstrap"
-import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../actions/userActions";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/userActions";
 import { getProfile } from "../actions/userActions";
 import { modifyProfile } from "../actions/userActions";
 
@@ -25,7 +25,7 @@ const Mypage = () => {
   const { userInfo } = userLogin;
 
   const logoutHandler = () => {
-    dispatch(logout())
+    dispatch(logout());
   }
 
   const modifyHandler = async (e) => {
