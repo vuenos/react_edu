@@ -2,17 +2,14 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {Button, Col, Form, FormLabel, Row} from "react-bootstrap";
-import { FormContainer, Loader, Message } from "../components"
+import { FormContainer, Loader, Message } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { detailProduct } from "../actions/productsActions";
+import { updateProduct } from "../actions/productsActions";
 
 const AddProduct = () => {
+  const dispatch = useDispatch();
   const params = useParams();
-  //입력값 상태관리
-  const navigate = useNavigate();
-
-  const goBack = () => {
-    navigate(-1);
-  }
-
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -23,90 +20,85 @@ const AddProduct = () => {
   const [countInStock, setCountInStock] = useState("");
   const [description, setDescription] = useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const [delProduct, setDelProduct] = useState(null);
 
-  const token = localStorage.getItem('token');
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+  const productDetail = useSelector((state) => state.productDetail)
+  const { loading, product, error } = productDetail;
+
+  console.log("+++++++++++", product)
+
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const { success } = productUpdate;
+
+  //입력값 상태관리
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1);
   }
 
   const addProductHandler = async (e) => {
     e.preventDefault();
 
     // 상품 등록값
-    const addInput = {
-      name: name,
-      price: price,
-      //image: image,
-      brand: brand,
-      category: category,
-      countInStock: countInStock,
-      description: description
-    }
+    // const addInput = {
+    //   name: name,
+    //   price: price,
+    //   //image: image,
+    //   brand: brand,
+    //   category: category,
+    //   countInStock: countInStock,
+    //   description: description
+    // }
 
     // 빈 입력값 처리
-    if (name === "" && price === "") {
-      setError("Please check input");
-      return
-    }
-
-    // API Network
-    try {
-      setLoading(true);
-      const { data, status } = await axios.put(`http://localhost:5000/api/products/${params.productId}`, addInput, config);
-      if (status === 200) {
-          setLoading(false);
-          alert('Add Success!');
-      }
-
-    } catch (error) {
-      setError(error.response.data.message);
-      setLoading(false)
-    }
+    // if (name === "" && price === "") {
+    //   setError("Please check input");
+    //   return
+    // }
 
   }
 
 
   //Delete network
   const deleteProduct = async () => {
-    try {
-      const { data, status } = await axios.delete(`http://localhost:5000/api/products/${params.productId}`, config);
-      setDelProduct(data);
-      if (status === 200) {
-        alert("Delete Success!!");
-        navigate("/products");
-      }
-    } catch (error) {
-      setError(error.response.data.message);
-    }
+    // try {
+    //   const { data, status } = await axios.delete(`http://localhost:5000/api/products/${params.productId}`, config);
+    //   setDelProduct(data);
+    //   if (status === 200) {
+    //     alert("Delete Success!!");
+    //     navigate("/products");
+    //   }
+    // } catch (error) {
+    //   setError(error.response.data.message);
+    // }
   }
 
-
-  //Get product data
-  const getProduct = async () => {
-    try {
-      const { data } = await axios.get(`http://localhost:5000/api/products/${params.productId}`);
-      setName(data.name);
-      setPrice(data.price);
-      setCurImage(data.image);
-      setBrand(data.brand);
-      setCategory(data.category);
-      setCountInStock(data.countInStock);
-      setDescription(data.description);
-
-    } catch (error) {
-
-    }
+  const updatedProduct = (e) => {
+    e.preventDefault();
+    dispatch(updateProduct(params.productId, {name, price, description, brand, category, countInStock}))
   }
+
 
   useEffect(() => {
-    getProduct();
-  }, []);
+    if (success) {
+      setMessage("Updated!")
+    } else {
+      if (!product._id || product._id !== params.productId) {
+        dispatch(detailProduct(params.productId))
+
+      } else {
+        setName(product.name)
+        setPrice(product.price)
+        setDescription(product.description)
+        setBrand(product.brand)
+        setCategory(product.category)
+        setCountInStock(product.countInStock)
+      }
+    }
+  }, [dispatch, success, product]);
 
 
 
@@ -117,6 +109,7 @@ const AddProduct = () => {
 
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
+      {message && <Message>{message}</Message>}
 
       <Form onSubmit={addProductHandler}>
         <Form.Group controlId={name}>
@@ -134,7 +127,7 @@ const AddProduct = () => {
           <Form.Control
             type="text"
             placeholeder="Enter product price"
-            value={price}
+            value={`$ ${price}`}
             onChange={(e) => setPrice(e.target.value)}
           />
         </Form.Group>
@@ -198,7 +191,7 @@ const AddProduct = () => {
 
             <div>
               <Button type="button" variant="danger" onClick={deleteProduct}>Delete</Button>
-              <Button type="submit" variant="success" className="ml-2">Confirm</Button>
+              <Button onClick={updatedProduct} variant="success" className="ml-2">Update</Button>
             </div>
         </Row>
 

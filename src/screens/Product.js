@@ -33,7 +33,6 @@ const Product = () => {
         <Col>
           {loading && <Loader />}
           <h1>{product.name} ({product.brand})</h1>
-          <p><small>{product._id}</small></p>
           <p>${product.price}</p>
           <p><img src={product.image} alt="" style={{ width: 240 }} /></p>
           <p>{product.description}</p>

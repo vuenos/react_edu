@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux"
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { userLoginReducer, userProfileReducer, userUpdateReducer, userModProfileReducer, getUserListReducer } from "./reducers/userReducers";
-import { productsListReducer, productDetailReducer } from "./reducers/productsReducer";
+import {productsListReducer, productDetailReducer, productUpdateReducer} from "./reducers/productsReducer";
 
 const env = process.env.NODE_ENV;//Backend env 설정의 NODE_ENV 상태(어플리케이션 상태)
 
@@ -13,6 +13,7 @@ const reducer = combineReducers({
   modifyUser: userModProfileReducer,
   productList: productsListReducer,
   productDetail: productDetailReducer,
+  productUpdate: productUpdateReducer,
   userList: getUserListReducer
 });//어플리케이션의 모든 reducer를 combine해준다.
 
