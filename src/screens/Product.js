@@ -1,36 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import {Container, Row, Col, Button} from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { detailProduct } from "../actions/productsActions"
+import {Loader} from "../components";
 
 const Product = () => {
-  const params = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState({});
+  const dispatch = useDispatch();
+
+  const params = useParams();
+  console.log(params)
+
+  const productDetail = useSelector((state) => state.productDetail)
+  const { loading, product, error } = productDetail;
+  console.log("++++++++", product)
 
   const goBack = () => {
     navigate(-1);
   }
 
-  const getProduct = async () => {
-    try {
-      const {data} = await axios.get(`http://localhost:5000/api/products/${params.productId}`)
-      console.log(data);
-      setProduct(data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
-    getProduct();
-  }, []);
+    if (!product._id || product._id !== params.productId) {
+      dispatch(detailProduct(params.productId))
+    }
+  }, [dispatch, params]);
 
 
   return (
     <Container>
       <Row>
         <Col>
+          {loading && <Loader />}
           <h1>{product.name} ({product.brand})</h1>
           <p><small>{product._id}</small></p>
           <p>${product.price}</p>

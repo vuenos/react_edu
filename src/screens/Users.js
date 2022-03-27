@@ -34,6 +34,7 @@ const Users = () => {
           <Table striped bordered hover>
             <thead>
             <tr>
+              <th>NO</th>
               <th>ID</th>
               <th>name</th>
               <th>email</th>
@@ -43,15 +44,16 @@ const Users = () => {
             </thead>
             <tbody>
             {loading && <Loader />}
-            {users && users.map((user) => (
+            {users && users.map((user, index) => (
 
               <LinkContainer to={`${user._id}`} key={user._id}>
                 <tr>
+                  <td>{index + 1}</td>
                   <td>{user._id}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.createdAt.slice(0, 10)}</td>
-                  <td>{user.isAdmin === "true" ? "admin" : "user"}</td>
+                  <td>{user.isAdmin === "true" ? "Y" : "N"}</td>
                 </tr>
               </LinkContainer>
             ))}

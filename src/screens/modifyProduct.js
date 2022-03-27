@@ -59,15 +59,12 @@ const AddProduct = () => {
     try {
       setLoading(true);
       const { data, status } = await axios.put(`http://localhost:5000/api/products/${params.productId}`, addInput, config);
-      console.log(status);
       if (status === 200) {
           setLoading(false);
-          console.log("Modify status: " + status);
           alert('Add Success!');
       }
 
     } catch (error) {
-      console.log("Error: " + error.response.data.message);
       setError(error.response.data.message);
       setLoading(false)
     }
@@ -81,12 +78,10 @@ const AddProduct = () => {
       const { data, status } = await axios.delete(`http://localhost:5000/api/products/${params.productId}`, config);
       setDelProduct(data);
       if (status === 200) {
-        console.log(status);
         alert("Delete Success!!");
         navigate("/products");
       }
     } catch (error) {
-      console.log(error.response.data.message);
       setError(error.response.data.message);
     }
   }
@@ -105,7 +100,7 @@ const AddProduct = () => {
       setDescription(data.description);
 
     } catch (error) {
-      console.log(error.message);
+
     }
   }
 

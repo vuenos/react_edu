@@ -12,7 +12,6 @@ const Products = () => {
       setProducts(data);
 
     } catch (error) {
-      console.log(error.response.data.message);
     }
   }
 

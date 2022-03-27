@@ -10,6 +10,7 @@ import Order from "./Order";
 import Login from "./Login";
 import RegisterUser from "./RegisterUser";
 import Mypage from "./Mypage";
+import UpdateProfile from "./UpdateProfile";
 import NotFound from "./NotFound";
 
 export {
@@ -25,5 +26,6 @@ export {
   Login,
   RegisterUser,
   Mypage,
+  UpdateProfile,
   NotFound
 }

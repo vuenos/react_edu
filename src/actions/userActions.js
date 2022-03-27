@@ -30,27 +30,22 @@ import {
 } from "../constants/userConstants"
 
 // Register User Action
-export const registerUserAction = (name, email, password) => async (dispatch) => {
+export const registerUserAction = (userInput) => async (dispatch) => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST
     });
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
 
-    const { data, status } = await axios.post("http://localhost:5000/api/users", {name, email, password}, config);
+    const { data, status } = await axios.post("http://localhost:5000/api/users", userInput);
     if (status === 201) {
       dispatch({
         type: USER_REGISTER_SUCCESS,
         payload: data,
       });
+      localStorage.setItem('userInfo', JSON.stringify(data));
     }
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
 
   } catch (err) {
     dispatch({
@@ -75,10 +70,8 @@ export const login = (email, password) => async (dispatch) => {
         type: USER_LOGIN_SUCCESS,
         payload: data
       })
-      console.log('Login Success :' + data)
+      localStorage.setItem('userInfo', JSON.stringify(data))
     }
-
-    localStorage.setItem('userInfo', JSON.stringify(data))
 
   } catch (err) {
     dispatch({
@@ -121,6 +114,7 @@ export const getProfile = () => async (dispatch, getState) => {
         type: GET_PROFILE_SUCCESS,
         payload: data
       })
+
     }
 
   } catch (err) {
@@ -134,21 +128,21 @@ export const getProfile = () => async (dispatch, getState) => {
   }
 }
 
-export const modifyProfile = (name, email, password) => async (dispatch, getState) => {
+export const modifyProfile = (userInput) => async (dispatch, getState) => {
   try {
     dispatch({
       type: MOD_PROFILE_REQUEST
     });
 
-    const { userInfo } = getState().userModProfile;
+    const {
+      userLogin: {userInfo}
+    } = getState();
 
     const config = {
-      header: {
+      headers: {
         Authorization: `Bearer ${userInfo.token}`
       },
     };
-
-    const userInput = { name, email, password }
 
     const { data, status } = await axios.put("http://localhost:5000/api/users/profile", userInput, config);
     if (status === 200) {
@@ -156,11 +150,14 @@ export const modifyProfile = (name, email, password) => async (dispatch, getStat
         type: MOD_PROFILE_SUCCESS,
         payload: data
       })
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data
+      })
+      localStorage.setItem('userInfo', JSON.stringify(data));
     }
-    console.log("#############" + data);
 
   } catch (err) {
-    console.log("&&&&&&", err.response.data)
     dispatch({
       type: MOD_PROFILE_FAIL,
       payload:

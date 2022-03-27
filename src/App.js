@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import Layout from "./Layout";
-import {Home, Order, Orders, Products, Product, AddProduct, ModifyProduct, Users, User, Login, RegisterUser, Mypage, NotFound} from "./screens";
+import {Home, Order, Orders, Products, Product, AddProduct, ModifyProduct, Users, User, Login, RegisterUser, Mypage, UpdateProfile, NotFound} from "./screens";
 import { Provider } from 'react-redux';
 import store from './store'
 
@@ -22,6 +22,7 @@ const App = () => {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<RegisterUser />} />
           <Route path="mypage" element={<Mypage />} />
+          <Route path="updateProfile" element={<UpdateProfile />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>

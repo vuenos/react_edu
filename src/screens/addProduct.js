@@ -55,19 +55,16 @@ const AddProduct = () => {
     try {
       setLoading(true);
       const { data, status } = await axios.post("http://localhost:5000/api/products", addInput, config);
-      console.log(status);
       if (status === 201) {
 
         setTimeout(() => {
           setLoading(false);
-          console.log("Add status: " + status);
           alert('Add Success!');
         }, 1500);
         navigate("/");
       }
 
     } catch (error) {
-      console.log(error.response.data.message);
       setError(error.response.data.message);
       setLoading(false)
     }

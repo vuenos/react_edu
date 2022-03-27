@@ -1,67 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { FormContainer, Loader, Message } from "../components"
+import {FormContainer, Loader, Message} from "../components";
 import { Form, FormLabel, Button, NavLink } from "react-bootstrap"
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../actions/userActions";
-import { getProfile, modifyProfile } from "../actions/userActions";
+import { modifyProfile } from "../actions/userActions";
 
-const Mypage = () => {
-
+const UpdateProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [message, setMessage] = useState("");
-
-  const userProfile = useSelector((state) => state.userProfile)
-  const { loading, user, error } = userProfile;
-
-  const modifyUser = useSelector((state) => state.modifyUser)
-  const { success } = modifyUser;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  }
+  const [name, setName] = useState(userInfo ? userInfo.name : "");
+  const [email, setEmail] = useState(userInfo ? userInfo.email : "");
+  const [password, setPassword] = useState("");
 
-  const updateProfile = (e) => {
+  const modifyUser = useSelector((state) => state.modifyUser)
+  const { loading, user, error } = modifyUser;
+
+  const modifyHandler = async (e) => {
     e.preventDefault();
-    dispatch(modifyProfile({ name, email, password}))
+    dispatch(modifyProfile(name, email, password));
   }
 
   useEffect(() => {
-    if (success) {
-      setMessage("Updated!")
-    } else {
-      if (!userInfo) {
-        navigate('/login')
-      } else {
-        if (!user || !user.name || !user.email) {
-          dispatch(getProfile())
-        } else {
-          setName(user.name)
-          setEmail(user.email)
-          setPassword(user.password)
-        }
-      }
-    }
 
-  }, [dispatch, user, success]);
+    if (!userInfo) {
+      navigate('/login')
+    }
+  }, [navigate, userInfo]);
 
   return (
     <FormContainer>
-      <h1>Mypage</h1>
+      <h1>My Profile</h1>
       {error && <Message variant="danger">{error}</Message>}
-      {loading && <Loader />}
-      {message && <Message>{message}</Message>}
+      {user && !loading && (
+        <Message variant="danger">Updated successfully.</Message>
+      )}
       <div>
-        <Form>
+        <Form onSubmit={modifyHandler}>
           <Form.Group controlId={"name"}>
             <FormLabel>Name</FormLabel>
             <Form.Control
@@ -93,12 +71,11 @@ const Mypage = () => {
             />
           </Form.Group>
           <br />
-          {/*<Form.Group controlId={"isAdmin"}>*/}
+          <Form.Group controlId={"isAdmin"}>
 
-          {/*</Form.Group>*/}
+          </Form.Group>
           <Form.Group className="d-flex justify-content-between">
-            <Button onClick={logoutHandler} variant="outline-danger">Log out</Button>
-            <Button onClick={updateProfile}>Update</Button>
+            <Button type="submit" variant="outline-danger">Update</Button>
           </Form.Group>
         </Form>
       </div>
@@ -106,4 +83,4 @@ const Mypage = () => {
   );
 };
 
-export default Mypage;
+export default UpdateProfile;

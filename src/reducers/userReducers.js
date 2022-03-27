@@ -21,7 +21,7 @@ import {
   GET_USERS_FAIL
 } from '../constants/userConstants';
 
-export const userRegisterReducer = (state = {}, action) => {
+export const userUpdateReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_REGISTER_REQUEST:
       return { loading: true };
@@ -67,9 +67,9 @@ export const userProfileReducer = (state = {user: {}}, action) => {
 export const userModProfileReducer = (state = {}, action) => {
   switch (action.type) {
     case MOD_PROFILE_REQUEST:
-      return { ...state, loading: true }
+      return { loading: true }
     case MOD_PROFILE_SUCCESS:
-      return { loading: false, userInfo: action.payload }
+      return { loading: false, success: true, userInfo: action.payload }
     case MOD_PROFILE_FAIL:
       return { loading: false, error: action.payload }
     default:
