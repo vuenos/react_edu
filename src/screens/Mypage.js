@@ -28,6 +28,7 @@ const Mypage = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
+    navigate('/login')
   }
 
   const updateProfile = (e) => {

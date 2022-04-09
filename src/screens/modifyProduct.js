@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import {Button, Col, Form, FormLabel, Row} from "react-bootstrap";
 import { FormContainer, Loader, Message } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { detailProduct } from "../actions/productsActions";
+import { detailProduct, deleteProduct } from "../actions/productsActions";
 import { updateProduct } from "../actions/productsActions";
 
 const AddProduct = () => {
@@ -22,7 +21,7 @@ const AddProduct = () => {
 
   const [message, setMessage] = useState("");
 
-  const [delProduct, setDelProduct] = useState(null);
+  //const [delProduct, setDelProduct] = useState(null);
 
   const productDetail = useSelector((state) => state.productDetail)
   const { loading, product, error } = productDetail;
@@ -31,6 +30,9 @@ const AddProduct = () => {
 
   const productUpdate = useSelector((state) => state.productUpdate);
   const { success } = productUpdate;
+
+  const productDelete = useSelector((state) => state.productDelete);
+  const  { success: successDeleted } = productDelete
 
   //입력값 상태관리
   const navigate = useNavigate();
@@ -63,22 +65,27 @@ const AddProduct = () => {
 
 
   //Delete network
-  const deleteProduct = async () => {
-    // try {
-    //   const { data, status } = await axios.delete(`http://localhost:5000/api/products/${params.productId}`, config);
-    //   setDelProduct(data);
-    //   if (status === 200) {
-    //     alert("Delete Success!!");
-    //     navigate("/products");
-    //   }
-    // } catch (error) {
-    //   setError(error.response.data.message);
-    // }
-  }
+  // const deleteProduct = async () => {
+  //   // try {
+  //   //   const { data, status } = await axios.delete(`http://localhost:5000/api/products/${params.productId}`, config);
+  //   //   setDelProduct(data);
+  //   //   if (status === 200) {
+  //   //     alert("Delete Success!!");
+  //   //     navigate("/products");
+  //   //   }
+  //   // } catch (error) {
+  //   //   setError(error.response.data.message);
+  //   // }
+  // }
 
   const updatedProduct = (e) => {
     e.preventDefault();
     dispatch(updateProduct(params.productId, {name, price, description, brand, category, countInStock}))
+  }
+
+  const deleteHandler = (e) => {
+    e.preventDefault();
+    dispatch(deleteProduct(params.productId));
   }
 
 
@@ -98,7 +105,10 @@ const AddProduct = () => {
         setCountInStock(product.countInStock)
       }
     }
-  }, [dispatch, success, product]);
+    if (successDeleted) {
+      navigate('/products')
+    }
+  }, [dispatch, success, product, successDeleted]);
 
 
 
@@ -190,7 +200,7 @@ const AddProduct = () => {
             <Button onClick={goBack}>Cancel</Button>
 
             <div>
-              <Button type="button" variant="danger" onClick={deleteProduct}>Delete</Button>
+              <Button type="button" variant="danger" onClick={deleteHandler}>Delete</Button>
               <Button onClick={updatedProduct} variant="success" className="ml-2">Update</Button>
             </div>
         </Row>

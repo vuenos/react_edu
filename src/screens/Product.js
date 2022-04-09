@@ -2,7 +2,7 @@ import React, {  useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {Container, Row, Col, Button} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { detailProduct } from "../actions/productsActions"
+import { detailProduct } from "../actions/productsActions";
 import {Loader} from "../components";
 
 const Product = () => {
@@ -14,7 +14,9 @@ const Product = () => {
 
   const productDetail = useSelector((state) => state.productDetail)
   const { loading, product, error } = productDetail;
-  console.log("++++++++", product)
+  console.log("++++++++", product);
+
+  //const productDelete = useSelector((state) => state.productDelete);
 
   const goBack = () => {
     navigate(-1);

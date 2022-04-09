@@ -21,12 +21,13 @@ import {
   GET_USERS_FAIL
 } from '../constants/userConstants';
 
+// Register user
 export const userUpdateReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_REGISTER_REQUEST:
       return { loading: true };
     case USER_REGISTER_SUCCESS:
-      return { loading: false, userInfo: action.payload };
+      return { loading: false, success: true, userInfo: action.payload };
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -34,6 +35,7 @@ export const userUpdateReducer = (state = {}, action) => {
   }
 }
 
+// Login
 export const userLoginReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:

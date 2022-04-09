@@ -35,7 +35,7 @@ const RegisterUser = () => {
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
 
-      <Form onSubmit={userRegisterHandler}>
+      <Form>
         <Form.Group controlId={"name"}>
           <FormLabel>Name</FormLabel>
           <Form.Control
@@ -66,7 +66,7 @@ const RegisterUser = () => {
           />
         </Form.Group>
         <br />
-        <Button type="submit" variant="primary">Register</Button>
+        <Button onClick={userRegisterHandler} variant="primary">Register</Button>
       </Form>
     </FormContainer>
   );

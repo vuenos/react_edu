@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import {Button, Col, Form, FormLabel, Row} from "react-bootstrap";
-import { FormContainer, Loader, Message } from "../components"
+import { FormContainer, Loader, Message } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../actions/productsActions"
+import user from "./User";
 
 const AddProduct = () => {
+
+  const dispatch = useDispatch();
 
   //입력값 상태관리
   const navigate = useNavigate();
@@ -21,55 +25,80 @@ const AddProduct = () => {
   const [countInStock, setCountInStock] = useState("");
   const [description, setDescription] = useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const productAdd = useSelector(state => state.productAdd);
+  const { loading, success, error } = productAdd;
 
-  const token = localStorage.getItem('token');
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
-
-  const addProductHandler = async (e) => {
+  const addProductHandler = (e) => {
     e.preventDefault();
-
-    // 상품 등록값
-    const addInput = {
-      name: name,
-      price: price,
-      //image: image,
-      brand: brand,
-      category: category,
-      countInStock: countInStock,
-      description: description
+    console.log("12121212121")
+    const userInput = {
+      name,
+      price,
+      brand,
+      category,
+      countInStock,
+      description
     }
-
-    // 빈 입력값 처리
-    if (name === "") {
-      setError("Please input name");
-      return
-    }
-
-    // API Network
-    try {
-      setLoading(true);
-      const { data, status } = await axios.post("http://localhost:5000/api/products", addInput, config);
-      if (status === 201) {
-
-        setTimeout(() => {
-          setLoading(false);
-          alert('Add Success!');
-        }, 1500);
-        navigate("/");
-      }
-
-    } catch (error) {
-      setError(error.response.data.message);
-      setLoading(false)
-    }
-
+    console.log(userInput)
+    dispatch(addProduct(userInput));
   }
+
+  useEffect(() => {
+    if (success) {
+      navigate('/products')
+    }
+  }, [success, navigate]);
+
+
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState("");
+
+  // const token = localStorage.getItem('token');
+  // const config = {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`
+  //   }
+  // }
+
+  // const addProductHandler = async (e) => {
+  //   e.preventDefault();
+  //
+  //   // 상품 등록값
+  //   const addInput = {
+  //     name: name,
+  //     price: price,
+  //     //image: image,
+  //     brand: brand,
+  //     category: category,
+  //     countInStock: countInStock,
+  //     description: description
+  //   }
+  //
+  //   // 빈 입력값 처리
+  //   if (name === "") {
+  //     setError("Please input name");
+  //     return
+  //   }
+  //
+  //   // API Network
+  //   try {
+  //     setLoading(true);
+  //     const { data, status } = await axios.post("http://localhost:5000/api/products", addInput, config);
+  //     if (status === 201) {
+  //
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //         alert('Add Success!');
+  //       }, 1500);
+  //       navigate("/");
+  //     }
+  //
+  //   } catch (error) {
+  //     setError(error.response.data.message);
+  //     setLoading(false)
+  //   }
+  //
+  // }
 
   return (
     <FormContainer>
@@ -158,7 +187,7 @@ const AddProduct = () => {
 
           <div>
             <Button type="reset" variant="warning">Reset</Button>
-            <Button type="submit" variant="success" className="ml-2">Confirm</Button>
+            <Button variant="success" className="ml-2" type="submit">Confirm</Button>
           </div>
         </Row>
 

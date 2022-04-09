@@ -1,15 +1,4 @@
-// import {Home, Order, Orders, Products, Product, AddProduct, ModifyProduct, Users, User, Login, RegisterUser, Mypage, UpdateProfile, NotFound} from "./screens";
-//
-// function Routes() {
-//   const element = useRoutes([
-//     { path: "/", element: <Home /> },
-//     { path: "users", element: <Users /> },
-//   ]);
-//
-//   return element;
-// }
-
-import { BrowserRouter, useRoutes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import {Home, Order, Orders, Products, Product, AddProduct, ModifyProduct, Users, User, Login, RegisterUser, Mypage, UpdateProfile, NotFound} from "./screens";
 import Layout from "./Layout";
 
