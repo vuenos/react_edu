@@ -2,22 +2,26 @@ import React, { useEffect} from 'react';
 import { Link } from "react-router-dom"
 import {Table, Container, Row, Col, Button} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
-import { Loader } from "../components";
-import {useSelector, useDispatch} from "react-redux";
+import { Loader, Paginate } from "../components";
+import { useSelector, useDispatch} from "react-redux";
 import {listProducts} from "../actions/productsActions";
+import {useParams} from "react-router-dom";
 
 const Products = () => {
   const dispatch = useDispatch();
+  const params = useParams();
+  const pageNumber = params.pageNumber || 1;
+  const keyword = params.keyword;
 
   const productList = useSelector((state) => state.productList)
-  const { loading, products, error } = productList;
+  const { loading, products, error, pages, page } = productList;
 
 
 
   useEffect(() => {
     //
-    dispatch(listProducts())
-  }, [dispatch]);
+    dispatch(listProducts(keyword, pageNumber))
+  }, [dispatch, pageNumber, keyword]);
 
 
   return (
@@ -51,9 +55,12 @@ const Products = () => {
             ))}
             </tbody>
           </Table>
+
+          <Paginate pages={pages} page={page} isAdmin={true} />
         </Col>
 
       </Row>
+
 
       <Row className="d-flex justify-content-end mt-4">
         <Link to="addProduct">
@@ -88,6 +95,7 @@ const Products = () => {
       {/*    </Table>*/}
       {/*</Container>*/}
       {/*<Outlet />*/}
+
     </Container>
   );
 };

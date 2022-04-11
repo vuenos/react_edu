@@ -17,13 +17,13 @@ import {
   ADD_PRODUCT_FAIL
 } from '../constants/productConstants'
 
-export const listProducts = () => async (dispatch) => {
+export const listProducts = (keyword = "", pageNumber = "") => async (dispatch) => {
   try {
 
     dispatch({
       type: GET_PRODUCTS_REQUEST
     })
-    const { data, status } = await axios.get("http://localhost:5000/api/products")
+    const { data, status } = await axios.get(`http://localhost:5000/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)
     if (status === 200) {
       dispatch({
         type: GET_PRODUCTS_SUCCESS,
